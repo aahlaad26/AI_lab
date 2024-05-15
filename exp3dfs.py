@@ -1,31 +1,32 @@
-class Node:
-    def __init__(self, key):
-        self.left = None
-        self.right = None
-        self.val = key
- 
- 
-# A function to do inorder tree traversal
-def printInorder(root):
- 
-    if root:
- 
-        # First recur on left child
-        printInorder(root.left)
- 
-        # then print the data of node
-        print(root.val),
- 
-        # now recur on right child
-        printInorder(root.right)
- 
- 
-# Driver code
-root = Node(1)
-root.left = Node(2)
-root.right = Node(3)
-root.left.left = Node(4)
-root.left.right = Node(5)
- 
-print("\nInorder traversal of binary tree is")
-printInorder(root)
+graph = {
+  'A' : ['B','C'],
+  'B' : ['D', 'E'],
+  'C' : ['F'],
+  'D' : [],
+  'E' : ['F'],
+  'F' : []
+}
+visited_bfs = []
+queue = []
+def bfs(visited_bfs, graph, node):
+  visited_bfs.append(node)
+  queue.append(node)
+  while queue:
+    s = queue.pop(0)
+    print (s, end = " ")
+    for neighbour in graph[s]:
+      if neighbour not in visited_bfs:
+        visited_bfs.append(neighbour)
+        queue.append(neighbour)
+visited = set()
+def dfs(visited, graph, node):
+    if node not in visited:
+        print (node, end=" ")
+        visited.add(node)
+        for neighbour in graph[node]:
+            dfs(visited, graph, neighbour)
+print("BFS:" , end =" ")
+bfs(visited_bfs, graph, 'A')
+print('\n')
+print("DFS:" , end =" ")
+dfs(visited, graph, 'A')
