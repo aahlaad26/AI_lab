@@ -1,62 +1,23 @@
-class CSP: 
-    def __init__(self, variables, Domains,constraints): 
-        self.variables = variables 
-        self.domains = Domains 
-        self.constraints = constraints 
-        self.solution = None
-  
-    def solve(self): 
-        assignment = {} 
-        self.solution = self.backtrack(assignment) 
-        return self.solution 
-  
-    def backtrack(self, assignment): 
-        if len(assignment) == len(self.variables): 
-            return assignment 
-  
-        var = self.select_unassigned_variable(assignment) 
-        for value in self.order_domain_values(var, assignment): 
-            if self.is_consistent(var, value, assignment): 
-                assignment[var] = value 
-                result = self.backtrack(assignment) 
-                if result is not None: 
-                    return result 
-                del assignment[var] 
-        return None
-  
-    def select_unassigned_variable(self, assignment): 
-        unassigned_vars = [var for var in self.variables if var not in assignment] 
-        return min(unassigned_vars, key=lambda var: len(self.domains[var])) 
-  
-    def order_domain_values(self, var, assignment): 
-        return self.domains[var] 
-  
-    def is_consistent(self, var, value, assignment): 
-        for constraint_var in self.constraints[var]: 
-            if constraint_var in assignment and assignment[constraint_var] == value: 
-                return False
-        return True
+def solutions():
+    # letters = ('s', 'e', 'n', 'd', 'm', 'o', 'r', 'y')
+    all_solutions = list()
+    for s in range(9, -1, -1):
+        for e in range(9, -1, -1):
+            for n in range(9, -1, -1):
+                for d in range(9, -1, -1):
+                    for m in range(9, 0, -1):
+                        for o in range(9, -1, -1):
+                            for r in range(9, -1, -1):
+                                for y in range(9, -1, -1):
+                                    if len(set([s, e, n, d, m, o, r, y])) == 8:
+                                        send = 1000 * s + 100 * e + 10 * n + d
+                                        more = 1000 * m + 100 * o + 10 * r + e
+                                        money = 10000 * m + 1000 * o + 100 * n + 10 * e + y
+
+                                        if send + more == money:
+                                            all_solutions.append(
+                                                (send, more, money))
+    return all_solutions
 
 
-puzzle = [[5, 3, 0, 0, 7, 0, 0, 0, 0], 
-          [6, 0, 0, 1, 9, 5, 0, 0, 0], 
-          [0, 9, 8, 0, 0, 0, 0, 6, 0], 
-          [8, 0, 0, 0, 6, 0, 0, 0, 3], 
-          [4, 0, 0, 8, 0, 3, 0, 0, 1], 
-          [7, 0, 0, 0, 2, 0, 0, 0, 6], 
-          [0, 6, 0, 0, 0, 0, 2, 8, 0], 
-          [0, 0, 0, 4, 1, 9, 0, 0, 5], 
-          [0, 0, 0, 0, 8, 0, 0, 0, 0] 
-          ] 
-  
-def print_sudoku(puzzle): 
-    for i in range(9): 
-        if i % 3 == 0 and i != 0: 
-            print("- - - - - - - - - - - ") 
-        for j in range(9): 
-            if j % 3 == 0 and j != 0: 
-                print(" | ", end="") 
-            print(puzzle[i][j], end=" ") 
-        print() 
-  
-print_sudoku(puzzle)
+print(solutions())
